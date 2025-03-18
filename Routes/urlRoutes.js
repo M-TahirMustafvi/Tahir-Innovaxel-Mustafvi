@@ -9,5 +9,8 @@ router.post('/', urlController.createShortUrl);
 //Gets a URL object form db based on short url
 router.get('/:shortCode', urlController.getLongUrl);
 
+//Updates Long URL
+router.put('/:shortCode', urlController.updateLongUrl);
+
 
 module.exports = router;

@@ -53,3 +53,24 @@ exports.getLongUrl = async(req, res) => {
         res.status(500).json({ error: 'Server error', details: error.message });
     }
 };
+
+// Update Long URL
+exports.updateLongUrl = async (req, res) => {
+    try {
+        const { shortCode } = req.params;
+        const { url } = req.body;
+        
+        const oldUrl = await URLs.findOne({ where: { shortCode } });
+        if (!oldUrl) return res.status(404).json({ error: 'URL not found' });
+
+        oldUrl.url = url;
+        await oldUrl.save();
+        
+        const { accessCount, ...responseData} = oldUrl.toJSON();
+        res.status(200).json(responseData);  
+
+    } catch (error) {
+        console.error("Error while updating URL:", error);  
+        res.status(500).json({ error: 'Server error', details: error.message });
+    }
+};
